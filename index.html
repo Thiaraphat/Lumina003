@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumina Electric Air | แดชบอร์ดช่างบริการ</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --blue:#0879d9; --deep:#0755a5; --sky:#49c7f5; --ice:#eefaff; --white:#fff;
+  --text:#12385b; --muted:#6d8aa3; --line:#d7ebf7;
+  --shadow:0 12px 30px rgba(0,86,160,.12); --radius:16px;
+  --green:#0a9b63; --red:#d32f2f; --orange:#c47a00;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;font-family:'Noto Sans Thai',sans-serif;color:var(--text);
+  background:linear-gradient(180deg,#dff7ff 0%,#f7fdff 55%,#e7f8ff 100%);
+  min-height:100vh;overflow-x:hidden;
+}
+button,input,select,textarea{font:inherit} button{cursor:pointer;border:0}
+.app{display:flex;min-height:100vh;position:relative;z-index:1}
+.sidebar{
+  width:260px;background:linear-gradient(180deg,#0567c8,#064b9c);color:white;
+  padding:24px 16px;position:fixed;left:0;top:0;bottom:0;z-index:10;
+  box-shadow:8px 0 25px rgba(0,85,165,0.15);overflow-y:auto;
+}
+.brand{padding:6px 8px 24px;border-bottom:1px solid rgba(255,255,255,0.2);margin-bottom:16px}
+.logo{font-size:22px;font-weight:800;letter-spacing:-0.5px}.brand small{display:block;font-size:12px;opacity:.85;margin-top:2px}
+.nav{display:grid;gap:8px}.nav button{background:transparent;color:#e9f8ff;text-align:left;padding:12px 16px;border-radius:12px;font-weight:600;font-size:14px;transition:.2s;width:100%}
+.nav button:hover,.nav button.active{background:rgba(255,255,255,0.2);box-shadow:inset 0 0 0 1px rgba(255,255,255,0.3)}
+.side-bottom{margin-top:24px;border-top:1px solid rgba(255,255,255,0.2);padding-top:16px;font-size:12px;opacity:.85;line-height:1.6}
+.main{margin-left:260px;width:calc(100% - 260px);padding:24px;min-width:0}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:12px;flex-wrap:wrap}
+.greeting h1{margin:0;font-size:22px;font-weight:700}.greeting p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.top-status-badge{padding:10px 18px;border-radius:30px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;color:#fff;transition:background-color .3s}
+.top-status-badge.off{background:var(--red)}.top-status-badge.on{background:var(--green)}
+.status-dot{width:10px;height:10px;border-radius:50%;background:#fff;display:inline-block}
+.page{display:none}.page.active{display:block}.grid{display:grid;gap:16px}.grid-4{grid-template-columns:repeat(4,1fr)}.grid-2{grid-template-columns:repeat(2,1fr)}
+.card{background:rgba(255,255,255,.95);border:1px solid #fff;border-radius:var(--radius);box-shadow:var(--shadow);padding:20px;position:relative}
+.card h2,.card h3{margin:0 0 12px;font-size:18px}.muted{color:var(--muted)}
+.btn{padding:9px 14px;border-radius:10px;font-weight:600;font-size:13px;background:var(--blue);color:white;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{filter:brightness(1.08)}.btn.secondary{background:#e9f7ff;color:#0768b9}.btn.danger{background:#ffebee;color:var(--red)}.btn.success{background:#e8faf2;color:var(--green)}.btn.outline{background:transparent;border:1px solid var(--line);color:var(--text)}
+.stat{display:flex;flex-direction:column;justify-content:center}.stat span{font-size:12px;color:var(--muted);margin-bottom:4px}.stat strong{font-size:22px;color:var(--text)}
+.section-title{display:flex;justify-content:space-between;align-items:center;margin:20px 0 12px}.section-title h2{margin:0;font-size:18px;font-weight:700}
+.job-card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fbfeff;margin-bottom:12px}
+.job-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}.job-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;padding-top:12px;border-top:1px dashed var(--line)}
+.tag{font-size:11px;background:#eaf7ff;color:#0675c8;padding:4px 10px;border-radius:20px;font-weight:700}.tag.green{background:#e8faf2;color:var(--green)}.tag.orange{background:#fff6e8;color:var(--orange)}
+.list{display:grid;gap:10px}.row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;gap:10px}
+.clock-banner{display:flex;gap:12px;margin-bottom:16px}.clock-btn{flex:1;padding:16px;border-radius:14px;font-size:15px;font-weight:700;color:#fff;text-align:center;transition:.2s}.clock-btn.in{background:var(--green)}.clock-btn.out{background:var(--red)}.clock-btn:hover{filter:brightness(1.05)}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.team-card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff;text-align:center}.team-avatar{width:56px;height:56px;border-radius:50%;background:#eaf7ff;color:var(--blue);display:grid;place-items:center;font-size:20px;font-weight:700;margin:0 auto 12px}
+.bonus-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:12px}.bonus-item{border:1px solid var(--line);border-radius:12px;padding:14px;background:#fff;display:flex;justify-content:space-between;align-items:center}
+.chat-box{border:1px solid var(--line);border-radius:14px;height:320px;background:#fff;padding:16px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}.chat-msg{max-width:75%;padding:10px 14px;border-radius:12px;font-size:13px;line-height:1.5}.chat-msg.admin{background:#eefaff;color:var(--text);align-self:flex-start;border:1px solid var(--line)}.chat-msg.tech{background:var(--blue);color:#fff;align-self:flex-end}.chat-input{display:flex;gap:8px}.chat-input input{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px 14px;outline:none}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,30,60,.5);z-index:30;place-items:center;padding:16px}.modal.show{display:grid}.modal-box{background:white;border-radius:18px;padding:24px;max-width:550px;width:100%;max-height:90vh;overflow:auto;position:relative}.close{position:absolute;right:16px;top:16px;background:#f0f4f8;border-radius:50%;width:32px;height:32px;font-size:16px;color:var(--muted)}
+.toast{position:fixed;right:24px;bottom:24px;background:#063f82;color:#fff;padding:14px 20px;border-radius:12px;box-shadow:var(--shadow);display:none;z-index:40;font-size:13px}
+@media(max-width:900px){.sidebar{width:70px;padding:16px 8px}.logo,.brand small,.nav span,.side-bottom{display:none}.main{margin-left:70px;width:calc(100% - 70px);padding:16px}.grid-4,.grid-2,.team-grid,.bonus-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">LUMINA</div><small>ระบบปฏิบัติการช่างบริการ</small></div>
+    <nav class="nav">
+      <button class="active" data-page="home"><span>หน้าหลัก</span></button>
+      <button data-page="team"><span>ทีมช่าง & โบนัส</span></button>
+      <button data-page="admin"><span>ติดต่อแอดมิน</span></button>
+      <button data-page="profile"><span>โปรไฟล์ช่าง</span></button>
+    </nav>
+    <div class="side-bottom">ศูนย์บริการ Lumina Electric Air<br>สาขาอำเภอเมืองอุดรธานี<br>ทีมปฏิบัติการที่ 1</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="greeting"><h1>สวัสดี ช่างพีช (หัวหน้าทีม)</h1><p id="currentDate"></p></div>
+      <div class="top-status-badge on" id="topStatusBadge"><span class="status-dot"></span><span id="topStatusText">กำลังปฏิบัติงาน</span></div>
+    </header>
+
+    <section class="page active" id="home">
+      <div class="section-title"><h2>ภาพรวมการปฏิบัติงานวันนี้</h2></div>
+      <div class="grid grid-4">
+        <div class="card stat"><span>งานวันนี้ทั้งหมด</span><strong>3 งาน</strong></div>
+        <div class="card stat"><span>งานที่เสร็จสิ้น</span><strong id="statCompleted">0 งาน</strong></div>
+        <div class="card stat"><span>กำลังดำเนินการ</span><strong id="statInProg">1 งาน</strong></div>
+        <div class="card stat"><span>สถานะทีม</span><strong>ทีม A</strong></div>
+      </div>
+
+      <div class="section-title"><h2>รายการงานถัดไปและสถานะการบริการ</h2><button class="btn secondary" onclick="refreshJobs()">รีเฟรชข้อมูล</button></div>
+      <div class="list" id="jobContainer">
+        <div class="job-card" id="job-1">
+          <div class="job-head"><div>
+            <b style="font-size:16px;">คุณเธียรภัทร์</b>
+            <div class="muted" style="margin-top:2px;">ประเภทงาน: ล้างแอร์ประจำปี</div>
+            <div class="muted">เวลานัดหมาย: วันนี้ 10:00 น.</div>
+            <div class="muted">สถานที่: ถนนทหาร ซอยสุขสว่าง อ.เมืองอุดรธานี</div>
+          </div><span class="tag orange status-tag">รอดำเนินการ</span></div>
+          <div class="job-actions">
+            <button class="btn secondary" onclick="showJobDetail('JOB-C-20260915-001','BKC-20260915-001','C01','คุณเธียรภัทร์','ล้างแอร์ประจำปี','วันนี้ 10:00 น.','ถนนทหาร ซอยสุขสว่าง อ.เมืองอุดรธานี')">1. รายละเอียด</button>
+            <a href="https://maps.google.com/?q=Thonburi+University" target="_blank" class="btn outline" style="text-decoration:none;">2. นำทาง</a>
+            <button class="btn" onclick="updateJobStatus(1,'กำลังไปบ้านลูกค้า','กำลังไปบ้านลูกค้า')">3. เริ่มงาน (กำลังไป)</button>
+            <button class="btn" onclick="updateJobStatus(1,'ถึงหน้างานแล้ว','ถึงบ้านลูกค้าแล้ว')">4. ถึงหน้างานแล้ว</button>
+            <button class="btn" onclick="updateJobStatus(1,'กำลังดำเนินงาน','กำลังทำงานอยู่')">5. กำลังดำเนินงาน</button>
+            <button class="btn success" onclick="updateJobStatus(1,'เสร็จสิ้น','งานเสร็จสิ้น (ส่งข้อมูลให้แอดมิน)')">6. งานเสร็จสิ้น</button>
+          </div>
+        </div>
+
+        <div class="job-card" id="job-2">
+          <div class="job-head"><div>
+            <b style="font-size:16px;">คุณสมพงศ์</b>
+            <div class="muted" style="margin-top:2px;">ประเภทงาน: ตรวจสอบระบบปรับอากาศ</div>
+            <div class="muted">เวลานัดหมาย: วันนี้ 11:00 น.</div>
+            <div class="muted">สถานที่: ถนนอุดรดุษฎี ซอยมิตรภาพ อ.เมืองอุดรธานี</div>
+          </div><span class="tag orange status-tag">กำลังปฏิบัติงาน</span></div>
+          <div class="job-actions">
+            <button class="btn secondary" onclick="showJobDetail('JOB-D-20260915-002','BKD-20260915-002','C02','คุณสมพงศ์','ตรวจสอบระบบปรับอากาศ','วันนี้ 11:00 น.','ถนนอุดรดุษฎี ซอยมิตรภาพ อ.เมืองอุดรธานี')">1. รายละเอียด</button>
+            <a href="https://maps.google.com/?q=Thonburi+University" target="_blank" class="btn outline" style="text-decoration:none;">2. นำทาง</a>
+            <button class="btn" onclick="updateJobStatus(2,'กำลังไปบ้านลูกค้า','กำลังไปบ้านลูกค้า')">3. เริ่มงาน (กำลังไป)</button>
+            <button class="btn" onclick="updateJobStatus(2,'ถึงหน้างานแล้ว','ถึงบ้านลูกค้าแล้ว')">4. ถึงหน้างานแล้ว</button>
+            <button class="btn" onclick="updateJobStatus(2,'กำลังดำเนินงาน','กำลังทำงานอยู่')">5. กำลังดำเนินงาน</button>
+            <button class="btn success" onclick="updateJobStatus(2,'เสร็จสิ้น','งานเสร็จสิ้น (ส่งข้อมูลให้แอดมิน)')">6. งานเสร็จสิ้น</button>
+          </div>
+        </div>
+
+        <div class="job-card" id="job-3">
+          <div class="job-head"><div>
+            <b style="font-size:16px;">คุณชลธาร</b>
+            <div class="muted" style="margin-top:2px;">ประเภทงาน: ติดตั้งเครื่องใหม่</div>
+            <div class="muted">เวลานัดหมาย: พรุ่งนี้ 09:00 น.</div>
+            <div class="muted">สถานที่: ถนนโพศรี ซอยจินตคาม อ.เมืองอุดรธานี</div>
+          </div><span class="tag orange status-tag">รอดำเนินการ</span></div>
+          <div class="job-actions">
+            <button class="btn secondary" onclick="showJobDetail('JOB-A-20260915-001','BKA-20260915-001','C03','คุณชลธาร','ติดตั้งเครื่องใหม่','พรุ่งนี้ 09:00 น.','ถนนโพศรี ซอยจินตคาม อ.เมืองอุดรธานี')">1. รายละเอียด</button>
+            <a href="https://maps.google.com/?q=Thonburi+University" target="_blank" class="btn outline" style="text-decoration:none;">2. นำทาง</a>
+            <button class="btn" onclick="updateJobStatus(3,'กำลังไปบ้านลูกค้า','กำลังไปบ้านลูกค้า')">3. เริ่มงาน (กำลังไป)</button>
+            <button class="btn" onclick="updateJobStatus(3,'ถึงหน้างานแล้ว','ถึงบ้านลูกค้าแล้ว')">4. ถึงหน้างานแล้ว</button>
+            <button class="btn" onclick="updateJobStatus(3,'กำลังดำเนินงาน','กำลังทำงานอยู่')">5. กำลังดำเนินงาน</button>
+            <button class="btn success" onclick="updateJobStatus(3,'เสร็จสิ้น','งานเสร็จสิ้น (ส่งข้อมูลให้แอดมิน)')">6. งานเสร็จสิ้น</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="team">
+      <div class="clock-banner">
+        <button class="clock-btn in" onclick="setWorkStatus(true)">เข้าปฏิบัติงาน (ยินดีต้อนรับ ขอให้เป็นวันที่ดีครับ)</button>
+        <button class="clock-btn out" onclick="setWorkStatus(false)">เลิกปฏิบัติงาน (ขอให้เดินทางกลับบ้านโดยสวัสดิภาพ)</button>
+      </div>
+      <div class="section-title"><h2>สมาชิกทีมช่างปฏิบัติการ</h2></div>
+      <div class="team-grid">
+        <div class="team-card"><div class="team-avatar">พีช</div><b style="font-size:16px;">ช่างพีช (หัวหน้าทีม)</b><div class="muted" style="margin:4px 0 12px;">อายุ 25 ปี</div><button class="btn secondary" style="width:100%" onclick="showTechDetail('ช่างพีช (หัวหน้าทีม)','ทีม A','หัวหน้าทีม','081-111-2233','25 ปี','ระบบ Inverter และงานซ่อมบอร์ด','5 ปี','08:15 น. - -','1,250 แต้ม')">รายละเอียดช่าง</button></div>
+        <div class="team-card"><div class="team-avatar">ปั้น</div><b style="font-size:16px;">ช่างปั้น (ผู้ช่วยช่าง)</b><div class="muted" style="margin:4px 0 12px;">อายุ 23 ปี</div><button class="btn secondary" style="width:100%" onclick="showTechDetail('ช่างปั้น (ผู้ช่วยช่าง)','ทีม A','ผู้ช่วยช่าง','081-111-2234','23 ปี','ติดตั้งแอร์และเดินระบบไฟ','3 ปี','08:18 น. - -','900 แต้ม')">รายละเอียดช่าง</button></div>
+        <div class="team-card"><div class="team-avatar">ทิว</div><b style="font-size:16px;">ช่างทิว (ช่างฝึกหัด)</b><div class="muted" style="margin:4px 0 12px;">อายุ 21 ปี</div><button class="btn secondary" style="width:100%" onclick="showTechDetail('ช่างทิว (ช่างฝึกหัด)','ทีม A','ช่างฝึกหัด','081-111-2235','21 ปี','ล้างแอร์และบำรุงรักษา','1 ปี','08:20 น. - -','600 แต้ม')">รายละเอียดช่าง</button></div>
+      </div>
+
+      <div class="card" style="margin-top:20px;">
+        <h3>คะแนนสะสมและระบบสวัสดิการโบนัส</h3>
+        <p class="muted" style="font-size:13px;margin-bottom:16px;">สะสมแต้มจากการส่งมอบงานคุณภาพ การได้รับรีวิวที่ดี และความตรงต่อเวลาในการบริการ</p>
+        <div class="grid grid-4" style="margin-bottom:16px;">
+          <div class="stat"><span>แต้มสะสมปัจจุบัน</span><strong id="pointsDisplay">1,250 แต้ม</strong></div>
+          <div class="stat"><span>จำนวนงานทั้งหมดที่ทำ</span><strong>486 งาน</strong></div>
+          <div class="stat"><span>อัตราการได้รับรีวิวดี</span><strong>+12% (รีวิวเชิงบวก)</strong></div>
+          <div class="stat"><span>อัตราความตรงต่อเวลา</span><strong>+98% (เพิ่มขึ้น 3%)</strong></div>
+        </div>
+        <div class="section-title"><h4 style="margin:0;">รายการแลกโบนัส (สามารถแลกตามจำนวนแต้มที่กำหนด)</h4></div>
+        <div class="bonus-grid" id="bonusList">
+          <div class="bonus-item" id="bonus-1"><div><b>1. ส่วนลดชมภาพยนตร์ 200 บาท</b><div class="muted" style="font-size:12px;">ใช้ 500 แต้ม</div></div><button class="btn secondary" onclick="redeemBonus('ส่วนลดชมภาพยนตร์ 200 บาท',500,'bonus-1')">แลกรับสิทธิ์</button></div>
+          <div class="bonus-item" id="bonus-2"><div><b>2. ส่วนลดร้านอาหาร 500 บาท</b><div class="muted" style="font-size:12px;">ใช้ 800 แต้ม</div></div><button class="btn secondary" onclick="redeemBonus('ส่วนลดร้านอาหาร 500 บาท',800,'bonus-2')">แลกรับสิทธิ์</button></div>
+          <div class="bonus-item" id="bonus-3"><div><b>3. เงินช่วยเหลือค่าใช้จ่ายจิปาถะ 2,000 บาท</b><div class="muted" style="font-size:12px;">ใช้ 1,000 แต้ม</div></div><button class="btn secondary" onclick="redeemBonus('เงินช่วยเหลือค่าใช้จ่ายจิปาถะ 2,000 บาท',1000,'bonus-3')">แลกรับสิทธิ์</button></div>
+          <div class="bonus-item" id="bonus-4"><div><b>4. โบนัสพิเศษประจำเดือน เพิ่ม 30%</b><div class="muted" style="font-size:12px;">ใช้ 3,500 แต้ม</div></div><button class="btn secondary" onclick="redeemBonus('โบนัสพิเศษประจำเดือน เพิ่ม 30%',3500,'bonus-4')">แลกรับสิทธิ์</button></div>
+          <div class="bonus-item" id="bonus-5"><div><b>5. วันหยุดพิเศษ 1 สัปดาห์ (เลือกวันเอง)</b><div class="muted" style="font-size:12px;">ใช้ 4,000 แต้ม</div></div><button class="btn secondary" onclick="redeemBonus('วันหยุดพิเศษ 1 สัปดาห์',4000,'bonus-5')">แลกรับสิทธิ์</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="admin">
+      <div class="card" style="margin-bottom:16px;background:#fff8e1;border:1px solid #ffe082;"><b style="color:#b78103;">ข้อกำหนดความปลอดภัยและระเบียบปฏิบัติการ</b><p style="margin:4px 0 0;font-size:13px;color:#795548;">เพื่อความปลอดภัยของลูกค้าและทีมช่าง รวมถึงการป้องกันปัญหาการรับงานนอกระบบ ไม่อนุญาตให้ช่างติดต่อกับลูกค้าโดยตรงโดยไม่ผ่านแอดมิน ทุกการสื่อสารและการแก้ไขข้อมูลต้องทำผ่านฝ่ายประสานงานกลางเท่านั้น</p></div>
+      <div class="card" style="margin-bottom:16px;"><div class="row" style="border:none;padding:4px 0;"><span>เวลาทำการฝ่ายสนับสนุนแอดมิน:</span><b>08:00 - 18:00 น. ทุกวัน</b></div></div>
+      <div class="card"><h3>ติดต่อแอดมิน</h3><div class="chat-box" id="chatBox"><div class="chat-msg admin">สวัสดีค่ะช่างพีช ฝ่ายแอดมินยินดีให้บริการค่ะ หากมีการปรับเปลี่ยนเคสงานหรือต้องการสอบถามข้อมูลเพิ่มเติมแจ้งได้เลยค่ะ</div></div><div class="chat-input"><input type="text" id="chatInput" placeholder="พิมพ์ข้อความถึงแอดมิน..."><button class="btn" onclick="sendChatMessage()">ส่งข้อความ</button></div></div>
+    </section>
+
+    <section class="page" id="profile">
+      <div class="grid grid-2">
+        <div class="card"><h3>ข้อมูลบัญชีผู้ใช้งาน</h3><div class="list">
+          <div class="row"><span>ชื่อช่าง</span><b>ช่างพีช</b></div>
+          <div class="row"><span>ทีม</span><b>ทีม A</b></div>
+          <div class="row"><span>ตำแหน่ง</span><b>หัวหน้าทีม</b></div>
+          <div class="row"><span>เบอร์โทรศัพท์</span><b>081-111-2233</b></div>
+          <div class="row"><span>อายุ</span><b>25 ปี</b></div>
+          <div class="row"><span>ความเชี่ยวชาญ</span><b>ระบบ Inverter และงานซ่อมบอร์ด</b></div>
+          <div class="row"><span>ประสบการณ์</span><b>5 ปี</b></div>
+        </div></div>
+        <div class="card"><h3>สถานะการปฏิบัติงาน</h3><div class="list">
+          <div class="row"><span>สถานะปัจจุบัน</span><b id="profileWorkStatus" style="color:var(--green);">กำลังปฏิบัติงาน</b></div>
+          <div class="row"><span>เวลาเข้า - ออกวันนี้</span><b>08:15 น. - -</b></div>
+          <div class="row"><span>แต้มสะสม</span><b id="profilePoints">1,250 แต้ม</b></div>
+          <div class="row"><span>งานที่ได้รับจาก Admin วันนี้</span><b>3 งาน</b></div>
+          <div class="row"><span>งานที่กำลังปฏิบัติงาน</span><b>1 งาน</b></div>
+          <div class="row"><span>งานที่เสร็จสิ้นวันนี้</span><b id="profileCompleted">0 งาน</b></div>
+        </div></div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="modal" id="modal"><div class="modal-box"><button class="close" onclick="closeModal()">✕</button><div id="modalContent"></div></div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+document.getElementById('currentDate').textContent=new Intl.DateTimeFormat('th-TH',{dateStyle:'full'}).format(new Date());
+
+document.querySelectorAll('.nav button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const pageId=btn.dataset.page;
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById(pageId).classList.add('active');
+    document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+function showToast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';
+  clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>{t.style.display='none'},3000);
+}
+function openModal(html){document.getElementById('modalContent').innerHTML=html;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+
+let isWorking=true;
+function setWorkStatus(status){
+  isWorking=status;
+  const badge=document.getElementById('topStatusBadge'),text=document.getElementById('topStatusText'),profile=document.getElementById('profileWorkStatus');
+  if(isWorking){
+    badge.className='top-status-badge on';text.textContent='กำลังปฏิบัติงาน';profile.textContent='กำลังปฏิบัติงาน';profile.style.color='var(--green)';
+    showToast('เข้าปฏิบัติงานเรียบร้อย: ยินดีต้อนรับ ขอให้เป็นวันที่ดีครับ');
+  }else{
+    badge.className='top-status-badge off';text.textContent='นอกเวลาปฏิบัติงาน';profile.textContent='นอกเวลาปฏิบัติงาน';profile.style.color='var(--red)';
+    showToast('บันทึกเลิกงานเรียบร้อย: ขอให้เดินทางกลับบ้านโดยสวัสดิภาพ');
+  }
+}
+
+const jobStatuses={1:'รอดำเนินการ',2:'กำลังปฏิบัติงาน',3:'รอดำเนินการ'};
+
+function updateJobStatus(jobId,statusTitle,statusMsg){
+  jobStatuses[jobId]=statusTitle;
+  const card=document.getElementById(`job-${jobId}`),tag=card.querySelector('.status-tag');
+  if(statusTitle==='เสร็จสิ้น'){tag.className='tag green status-tag';tag.textContent='เสร็จสิ้น'}
+  else{tag.className='tag orange status-tag';tag.textContent=statusTitle}
+  updateDashboardStats();
+  showToast(`อัปเดตสถานะงานเรียบร้อย: ${statusMsg} (ส่งข้อมูลอัปเดตให้แอดมินแล้ว)`);
+}
+function updateDashboardStats(){
+  let completed=0,inProgress=0;
+  Object.values(jobStatuses).forEach(status=>{
+    if(status==='เสร็จสิ้น')completed++;
+    else if(status!=='รอดำเนินการ')inProgress++;
+  });
+  document.getElementById('statCompleted').textContent=`${completed} งาน`;
+  document.getElementById('statInProg').textContent=`${inProgress} งาน`;
+  document.getElementById('profileCompleted').textContent=`${completed} งาน`;
+}
+function refreshJobs(){showToast('ทำการรีเฟรชข้อมูลรายการงานเรียบร้อยแล้ว')}
+
+function showJobDetail(jobId,bookingId,customerId,customer,jobType,time,address){
+  openModal(`
+    <h3>รายละเอียดงานบริการ</h3>
+    <div class="list" style="margin-top:14px;">
+      <div class="row"><span>JOB ID</span><b>${jobId}</b></div>
+      <div class="row"><span>Booking ID</span><b>${bookingId}</b></div>
+      <div class="row"><span>รหัสลูกค้า</span><b>${customerId}</b></div>
+      <div class="row"><span>ชื่อลูกค้า</span><b>${customer}</b></div>
+      <div class="row"><span>ประเภทงาน</span><b>${jobType}</b></div>
+      <div class="row"><span>เวลานัดหมาย</span><b>${time}</b></div>
+      <div class="row"><span>สถานที่</span><b>${address}</b></div>
+      <div class="row"><span>พื้นที่ปฏิบัติงาน</span><b>อำเภอเมืองอุดรธานี</b></div>
+      <div class="row"><span>จุดนำทางเดโม่</span><b>Thonburi University</b></div>
+    </div>
+    <button class="btn" style="margin-top:16px;width:100%;" onclick="closeModal()">รับทราบข้อมูล</button>
+  `);
+}
+
+function showTechDetail(name,team,position,phone,age,spec,experience,time,points){
+  openModal(`
+    <h3>ข้อมูลช่างบริการ: ${name}</h3>
+    <div class="list" style="margin-top:14px;">
+      <div class="row"><span>ทีม</span><b>${team}</b></div>
+      <div class="row"><span>ตำแหน่ง</span><b>${position}</b></div>
+      <div class="row"><span>เบอร์โทรศัพท์</span><b>${phone}</b></div>
+      <div class="row"><span>อายุ</span><b>${age}</b></div>
+      <div class="row"><span>ความเชี่ยวชาญ</span><b>${spec}</b></div>
+      <div class="row"><span>ประสบการณ์</span><b>${experience}</b></div>
+      <div class="row"><span>เวลาเข้า - ออกวันนี้</span><b>${time}</b></div>
+      <div class="row"><span>แต้มสะสม</span><b>${points}</b></div>
+    </div>
+    <button class="btn" style="margin-top:16px;width:100%;" onclick="closeModal()">ปิดหน้าต่าง</button>
+  `);
+}
+
+let userPoints=1250;
+function updatePointsDisplay(){
+  document.getElementById('pointsDisplay').textContent=userPoints.toLocaleString('th-TH')+' แต้ม';
+  document.getElementById('profilePoints').textContent=userPoints.toLocaleString('th-TH')+' แต้ม';
+}
+function redeemBonus(bonusName,points,elementId){
+  if(userPoints<points){
+    showToast(`แต้มสะสมไม่เพียงพอ (ต้องการ ${points.toLocaleString('th-TH')} แต้ม) กรุณาปฏิบัติงานเพิ่มเพื่อสะสมแต้ม`);
+    return;
+  }
+
+  openModal(`
+    <h3>ขอแลกสิทธิโบนัส</h3>
+    <div class="list" style="margin-top:14px;">
+      <div class="row"><span>รายการ</span><b>${bonusName}</b></div>
+      <div class="row"><span>แต้มที่ใช้</span><b>${points.toLocaleString('th-TH')} แต้ม</b></div>
+      <div class="row"><span>แต้มคงเหลือหลังยืนยัน</span><b>${(userPoints-points).toLocaleString('th-TH')} แต้ม</b></div>
+    </div>
+    <div style="margin-top:16px;padding:14px;border-radius:12px;background:#eefaff;border:1px solid var(--line);">
+      <b>แอดมินตอบกลับ</b>
+      <p style="margin:6px 0 0;font-size:13px;line-height:1.6;">ตรวจสอบแต้มสะสมแล้วค่ะ สามารถแลกสิทธิ์ <b>${bonusName}</b> ได้ค่ะ กรุณายืนยันการใช้ ${points.toLocaleString('th-TH')} แต้ม เพื่อดำเนินการต่อค่ะ</p>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button class="btn outline" style="flex:1;" onclick="closeModal()">ยกเลิก</button>
+      <button class="btn success" style="flex:1;" onclick="confirmBonus('${bonusName.replace("'","\'")}',${points},'${elementId}')">ยืนยันสิทธิ์</button>
+    </div>
+  `);
+}
+
+function confirmBonus(bonusName,points,elementId){
+  if(userPoints<points){ closeModal(); showToast('แต้มสะสมไม่เพียงพอ'); return; }
+  userPoints-=points;
+  updatePointsDisplay();
+  closeModal();
+  showToast(`แอดมินยืนยันสิทธิ์แล้ว: แลก "${bonusName}" สำเร็จ`);
+  const item=document.getElementById(elementId);
+  if(item){
+    item.style.opacity='.5';
+    const button=item.querySelector('button');
+    if(button){button.disabled=true;button.textContent='แลกสิทธิ์แล้ว';}
+  }
+}
+
+function sendChatMessage(){
+  const input=document.getElementById('chatInput'),text=input.value.trim();if(!text)return;
+  const chatBox=document.getElementById('chatBox'),techMsg=document.createElement('div');
+  techMsg.className='chat-msg tech';techMsg.textContent=text;chatBox.appendChild(techMsg);
+  input.value='';chatBox.scrollTop=chatBox.scrollHeight;
+  setTimeout(()=>{
+    const adminMsg=document.createElement('div');adminMsg.className='chat-msg admin';
+    adminMsg.textContent='แอดมินได้รับข้อความแล้วค่ะ กำลังตรวจสอบข้อมูลและดำเนินการให้สักครู่ค่ะ';
+    chatBox.appendChild(adminMsg);chatBox.scrollTop=chatBox.scrollHeight;
+  },1000);
+}
+updateDashboardStats();
+</script>
+</body>
+</html>
